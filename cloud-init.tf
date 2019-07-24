@@ -5,7 +5,7 @@ data "template_file" "cloud-init" {
 data "template_file" "shell-script" {
   template = "${file("${path.module}/cloud-init.sh")}"
 
-  vars {
+  vars = {
     DB_USER        = "${replace(format("%s_%s", var.service, var.environment), "-", "_")}"
     CE_PKG         = "${var.ce_pkg}"
     EE_PKG         = "${var.ee_pkg}"

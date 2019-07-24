@@ -2,7 +2,7 @@
 
 [Kong API Gateway](https://konghq.com/) is an API gateway microservices
 management layer. This is the terraform module used to provision Kong
-clusters at Zillow Group, available under the Apache License 2.0 
+clusters at Zillow Group, available under the Apache License 2.0
 license. Both Kong Community and Enterprise Edition are supported.
 
 By default, the following resources will be provisioned:
@@ -17,12 +17,12 @@ By default, the following resources will be provisioned:
   - HTTPS:8444 - Kong Admin API (Enterprise Edition only)
   - HTTPS:8445 - Kong Admin GUI (Enterprise Edition only)
 - Security groups granting least privilege access to resources
-- An IAM instance profile for access to Kong specific SSM Parameter Store 
+- An IAM instance profile for access to Kong specific SSM Parameter Store
   metadata and secrets
 
-Optionally, a redis cluster can be provisioned for rate-limiting counters 
+Optionally, a redis cluster can be provisioned for rate-limiting counters
 and caching, and most default resources can be disabled.  See variables.tf
-for a complete list and description of tunables. 
+for a complete list and description of tunables.
 
 The Kong nodes are based on [Minimal Ubuntu](https://wiki.ubuntu.com/Minimal).
 Using cloud-init, the following is provisioned on top of the AMI:
@@ -61,10 +61,10 @@ Example main.tf:
     module "kong" {
       source = "github.com/zillowgroup/kong-terraform"
 
+      enable_ee             = "0"  # Not enabling Enterprise edition
       vpc_name              = "my-vpc"
       environment           = "dev"
       ec2_instance_type     = "t2.small"
-      ec2_ebs_optimized     = false
       ec2_key_name          = "my-key"
       ssl_cert_external     = "*.domain.name"
       ssl_cert_internal     = "*.domain.name"
@@ -99,14 +99,14 @@ Note: You can generate a random, secure password using:
 
     pwgen -s 16
 
-This step is manual to avoid checking in secrets into a repository. 
+This step is manual to avoid checking in secrets into a repository.
 Additionally, if installing Enterprise Edition:
 
 Update the license key by editing the parameter (default value is "placeholder"):
- 
+
     /[service]/[environment]/ee/license
 
-Update the Bintray authentication paramater (default value is "placeholder", format is 
+Update the Bintray authentication paramater (default value is "placeholder", format is
 "username:apikey")" for Enterprise Edition downloads:
 
     /[service]/[environment]/ee/bintray-auth
@@ -115,7 +115,7 @@ To login to the EC2 instance(s):
 
     ssh -i [/path/to/key/specified/in/ec2_key_name] ubuntu@[ec2-instance]
 
-After you login to an EC2 instance, it is **highly** recommended to update 
+After you login to an EC2 instance, it is **highly** recommended to update
 the master PostgreSQL password using psql from the command line:
 
     PG_HOST=$(grep ^pg_host /etc/kong/kong.conf | cut -d= -f2 | awk '{print $1}')

@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "kong" {
   statement {
     actions = ["sts:AssumeRole"]
 
-    principals = {
+    principals {
       type = "Service"
 
       identifiers = ["ec2.amazonaws.com"]
