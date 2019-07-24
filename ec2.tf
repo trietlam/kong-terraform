@@ -56,7 +56,7 @@ resource "aws_autoscaling_group" "kong" {
   max_size                  = "${var.asg_max_size}"
   min_size                  = "${var.asg_min_size}"
 
-  target_group_arns = ["${
+  target_group_arns = "${
     compact(
       concat(
         aws_alb_target_group.external.*.arn,
@@ -65,40 +65,40 @@ resource "aws_autoscaling_group" "kong" {
         aws_alb_target_group.internal-gui.*.arn
       )
     )
-  }"]
+  }"
 
-  tags = ["${concat(
+  tags = "${concat(
       list(
         map(
-          "key", "Name", 
-          "value", format("%s-%s", var.service, var.environment), 
+          "key", "Name",
+          "value", format("%s-%s", var.service, var.environment),
           "propagate_at_launch", true
         )
       ),
       list(
         map(
-          "key", "Environment", 
-          "value", var.environment, 
+          "key", "Environment",
+          "value", var.environment,
           "propagate_at_launch", true
         )
       ),
       list(
         map(
-          "key", "Description", 
-          "value", var.description, 
+          "key", "Description",
+          "value", var.description,
           "propagate_at_launch", true
         )
       ),
       list(
         map(
-          "key", "Service", 
-          "value", var.service, 
+          "key", "Service",
+          "value", var.service,
           "propagate_at_launch", true
         )
       ),
       local.tags
     )
-  }"]
+  }"
 
   depends_on = [
     "aws_rds_cluster.kong"

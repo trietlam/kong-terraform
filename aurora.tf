@@ -23,14 +23,10 @@ resource "aws_rds_cluster" "kong" {
   )}"
 }
 
-locals {
-  kong_rds_cluster = "${aws_rds_cluster.kong[count.index]}"
-}
-
 resource "aws_rds_cluster_instance" "kong" {
   count              = "${var.db_instance_count}"
   identifier         = "${var.service}-${var.environment}-${count.index}"
-  cluster_identifier = "${local.kong_rds_cluster.id}"
+  cluster_identifier = "${aws_rds_cluster.kong.*.id[count.index]}"
   engine             = "aurora-postgresql"
   instance_class     = "${var.db_instance_class}"
 

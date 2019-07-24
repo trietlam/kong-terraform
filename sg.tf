@@ -95,7 +95,7 @@ resource "aws_security_group_rule" "kong-ingress-admin-bastion" {
   to_port   = 8001
   protocol  = "tcp"
 
-  cidr_blocks = ["${var.bastion_cidr_blocks}"]
+  cidr_blocks = "${var.bastion_cidr_blocks}"
 }
 
 # External load balancer access
@@ -205,7 +205,7 @@ resource "aws_security_group_rule" "external-lb-ingress-api" {
   to_port   = 443
   protocol  = "tcp"
 
-  cidr_blocks = ["${var.external_cidr_blocks}"]
+  cidr_blocks = "${var.external_cidr_blocks}"
 }
 
 resource "aws_security_group_rule" "external-lb-egress-kong-admin" {
@@ -253,7 +253,7 @@ resource "aws_security_group_rule" "internal-lb-ingress-kong-http-api" {
   to_port   = 80
   protocol  = "tcp"
 
-  cidr_blocks = ["${var.internal_http_cidr_blocks}"]
+  cidr_blocks = "${var.internal_http_cidr_blocks}"
 }
 
 resource "aws_security_group_rule" "internal-lb-ingress-kong-https-api" {
@@ -264,7 +264,7 @@ resource "aws_security_group_rule" "internal-lb-ingress-kong-https-api" {
   to_port   = 443
   protocol  = "tcp"
 
-  cidr_blocks = ["${var.internal_https_cidr_blocks}"]
+  cidr_blocks = "${var.internal_https_cidr_blocks}"
 }
 
 resource "aws_security_group_rule" "internal-lb-ingress-kong-admin" {
@@ -277,7 +277,7 @@ resource "aws_security_group_rule" "internal-lb-ingress-kong-admin" {
   to_port   = 8444
   protocol  = "tcp"
 
-  cidr_blocks = ["${var.admin_cidr_blocks}"]
+  cidr_blocks = "${var.admin_cidr_blocks}"
 }
 
 resource "aws_security_group_rule" "internal-lb-ingress-kong-gui" {
@@ -290,7 +290,7 @@ resource "aws_security_group_rule" "internal-lb-ingress-kong-gui" {
   to_port   = 8445
   protocol  = "tcp"
 
-  cidr_blocks = ["${var.gui_cidr_blocks}"]
+  cidr_blocks = "${var.gui_cidr_blocks}"
 }
 
 resource "aws_security_group_rule" "internal-lb-egress-kong-admin" {

@@ -63,7 +63,7 @@ resource "aws_alb" "external" {
 resource "aws_alb_listener" "external-https" {
   count = "${var.enable_external_lb}"
 
-  load_balancer_arn = "${aws_alb.external.arn}"
+  load_balancer_arn = "${aws_alb.external.*.arn[count.index]}"
   port              = "443"
   protocol          = "HTTPS"
 
@@ -181,7 +181,7 @@ resource "aws_alb" "internal" {
 resource "aws_alb_listener" "internal-http" {
   count = "${var.enable_internal_lb}"
 
-  load_balancer_arn = "${aws_alb.internal.arn}"
+  load_balancer_arn = "${aws_alb.internal.*.arn[count.index]}"
   port              = "80"
   protocol          = "HTTP"
 
@@ -194,7 +194,7 @@ resource "aws_alb_listener" "internal-http" {
 resource "aws_alb_listener" "internal-https" {
   count = "${var.enable_internal_lb}"
 
-  load_balancer_arn = "${aws_alb.internal.arn}"
+  load_balancer_arn = "${aws_alb.internal.*.arn[count.index]}"
   port              = "443"
   protocol          = "HTTPS"
 
@@ -210,7 +210,7 @@ resource "aws_alb_listener" "internal-https" {
 resource "aws_alb_listener" "internal-admin" {
   count = "${var.enable_ee}"
 
-  load_balancer_arn = "${aws_alb.internal.arn}"
+  load_balancer_arn = "${aws_alb.internal.*.arn[count.index]}"
   port              = "8444"
   protocol          = "HTTPS"
 
@@ -218,7 +218,7 @@ resource "aws_alb_listener" "internal-admin" {
   certificate_arn = "${data.aws_acm_certificate.gui-cert.arn}"
 
   default_action {
-    target_group_arn = "${aws_alb_target_group.internal-admin.arn}"
+    target_group_arn = "${aws_alb_target_group.internal-admin.*.arn[count.index]}"
     type             = "forward"
   }
 }
@@ -226,7 +226,7 @@ resource "aws_alb_listener" "internal-admin" {
 resource "aws_alb_listener" "internal-gui" {
   count = "${var.enable_ee}"
 
-  load_balancer_arn = "${aws_alb.internal.arn}"
+  load_balancer_arn = "${aws_alb.internal.*.arn[count.index]}"
   port              = "8445"
   protocol          = "HTTPS"
 
@@ -234,7 +234,7 @@ resource "aws_alb_listener" "internal-gui" {
   certificate_arn = "${data.aws_acm_certificate.gui-cert.arn}"
 
   default_action {
-    target_group_arn = "${aws_alb_target_group.internal-gui.arn}"
+    target_group_arn = "${aws_alb_target_group.internal-gui.*.arn[count.index]}"
     type             = "forward"
   }
 }
